@@ -30,7 +30,6 @@ import {
   ],
   providers: [provideIcons({ lucideSearch })],
   templateUrl: './before-org-selector.html',
-  styleUrl: './before-org-selector.scss',
 })
 export class BeforeOrgSelector {
   readonly organizations = input.required<readonly Organization[]>();

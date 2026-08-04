@@ -1,4 +1,8 @@
-<article hlmCard class="after-accent gap-5" aria-labelledby="after-title">
+<article
+  hlmCard
+  class="gap-5 [--accent-soft:#eef8f4] [--accent:#176b54]"
+  aria-labelledby="after-title"
+>
   <div hlmCardHeader class="justify-between">
     <div class="flex min-w-0 flex-col gap-1.5">
       <span hlmBadge variant="outline" class="text-accent w-fit">Optimized</span>
@@ -49,25 +53,24 @@
 
     <cdk-virtual-scroll-viewport
       #viewport
-      class="virtual-viewport organization-list"
+      class="m-0 h-100 p-0"
       data-testid="after-list"
       [appVariableSizeVirtualScroll]="estimatedHeights()"
       aria-label="Organizations"
     >
-      <ul class="virtual-list">
+      <ul class="m-0 list-none p-0">
         <li
           *cdkVirtualFor="
             let organization of filteredOrganizations();
             let groupIndex = index;
             trackBy: trackById
           "
-          class="organization-group"
+          class="border-b"
           [appMeasureVirtualItem]="groupIndex"
         >
           <button
             type="button"
-            class="organization-option"
-            [class.organization-option--selected]="selectedId() === organization.id"
+            class="flex h-16 w-full cursor-pointer items-center border-0 bg-transparent px-[0.9rem] py-[0.62rem] text-left hover:bg-(--accent-soft) focus-visible:bg-(--accent-soft) focus-visible:shadow-[inset_3px_0_var(--accent)] focus-visible:outline-none aria-pressed:bg-(--accent-soft) aria-pressed:shadow-[inset_3px_0_var(--accent)] dark:hover:bg-[color-mix(in_oklab,var(--accent)_14%,var(--card))] dark:focus-visible:bg-[color-mix(in_oklab,var(--accent)_18%,var(--card))] dark:aria-pressed:bg-[color-mix(in_oklab,var(--accent)_18%,var(--card))]"
             [attr.aria-pressed]="selectedId() === organization.id"
             (click)="select(organization)"
           >
@@ -80,15 +83,14 @@
           </button>
           @if (organization.subOrganizations.length) {
             <ul
-              class="suborganization-list"
+              class="m-0 list-none p-0"
               [attr.aria-label]="'Sub-organizations of ' + organization.name"
             >
               @for (subOrganization of organization.subOrganizations; track subOrganization.id) {
                 <li>
                   <button
                     type="button"
-                    class="organization-option organization-option--sub"
-                    [class.organization-option--selected]="selectedId() === subOrganization.id"
+                    class="before:border-border relative flex h-11 w-full cursor-pointer items-center border-0 bg-inherit pt-[0.35rem] pr-[0.9rem] pb-[0.35rem] pl-13 text-left before:absolute before:top-0 before:left-[1.65rem] before:h-5 before:w-[0.85rem] before:border-b before:border-l before:content-[''] hover:bg-(--accent-soft) focus-visible:bg-(--accent-soft) focus-visible:shadow-[inset_3px_0_var(--accent)] focus-visible:outline-none aria-pressed:bg-(--accent-soft) aria-pressed:shadow-[inset_3px_0_var(--accent)] dark:hover:bg-[color-mix(in_oklab,var(--accent)_14%,var(--card))] dark:focus-visible:bg-[color-mix(in_oklab,var(--accent)_18%,var(--card))] dark:aria-pressed:bg-[color-mix(in_oklab,var(--accent)_18%,var(--card))]"
                     [attr.aria-pressed]="selectedId() === subOrganization.id"
                     (click)="select(subOrganization)"
                   >

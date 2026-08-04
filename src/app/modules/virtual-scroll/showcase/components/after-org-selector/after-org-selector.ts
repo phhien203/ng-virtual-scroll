@@ -37,7 +37,6 @@ import {
   ],
   providers: [provideIcons({ lucideSearch })],
   templateUrl: './after-org-selector.html',
-  styleUrl: './after-org-selector.scss',
 })
 export class AfterOrgSelector {
   readonly organizations = input.required<readonly Organization[]>();
