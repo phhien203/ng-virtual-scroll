@@ -1,13 +1,7 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-  lucideBookOpen,
-  lucideBot,
-  lucideChevronRight,
-  lucideSettings2,
-  lucideSquareTerminal,
-} from '@ng-icons/lucide';
+import { lucideChevronRight, lucideGauge } from '@ng-icons/lucide';
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
 import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
 
@@ -18,11 +12,8 @@ import { SidebarNavigationItem } from '@layout/main-layout/models/sidebar-data';
   imports: [HlmSidebarImports, HlmCollapsibleImports, NgIcon, RouterLink],
   providers: [
     provideIcons({
-      lucideBookOpen,
-      lucideBot,
       lucideChevronRight,
-      lucideSettings2,
-      lucideSquareTerminal,
+      lucideGauge,
     }),
   ],
   template: `

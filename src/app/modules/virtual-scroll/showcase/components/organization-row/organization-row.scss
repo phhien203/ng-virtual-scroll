@@ -1,0 +1,16 @@
+:host {
+  align-items: center;
+  background-color: inherit;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  min-width: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.identity {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}

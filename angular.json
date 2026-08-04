@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "ng-monolithic-starter": {
+    "ng-virtual-scroll": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -58,10 +58,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ng-monolithic-starter:build:production"
+              "buildTarget": "ng-virtual-scroll:build:production"
             },
             "development": {
-              "buildTarget": "ng-monolithic-starter:build:development"
+              "buildTarget": "ng-virtual-scroll:build:development"
             }
           },
           "defaultConfiguration": "development"

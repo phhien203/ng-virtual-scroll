@@ -1,0 +1,136 @@
+<article hlmCard class="after-accent gap-5" aria-labelledby="after-title">
+  <div hlmCardHeader class="justify-between">
+    <div class="flex min-w-0 flex-col gap-1.5">
+      <span hlmBadge variant="outline" class="text-accent w-fit">Optimized</span>
+      <h2 hlmCardTitle id="after-title" class="text-lg font-semibold">
+        Custom variable-height strategy
+      </h2>
+      <p hlmCardDescription>Group heights are estimated, rendered, measured, and corrected.</p>
+    </div>
+    <div hlmCardAction>
+      <span hlmBadge variant="secondary">Bounded DOM</span>
+    </div>
+  </div>
+
+  <hlm-separator />
+
+  <div hlmCardContent class="flex flex-col gap-4">
+    <div class="flex items-baseline gap-2">
+      <span class="text-muted-foreground text-[0.62rem] font-semibold tracking-[0.06em] uppercase">
+        Workspace access
+      </span>
+      <h3 class="text-foreground text-sm font-semibold">Select an organization</h3>
+    </div>
+
+    <div class="relative">
+      <ng-icon
+        name="lucideSearch"
+        aria-hidden="true"
+        class="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2"
+      />
+      <input
+        hlmInput
+        type="search"
+        class="h-8 pl-7"
+        placeholder="Search 10,000 organizations…"
+        [value]="query()"
+        (input)="onSearch($event)"
+        aria-label="Search organizations in the custom variable-height virtual list"
+      />
+    </div>
+
+    <div
+      class="text-muted-foreground flex items-center justify-between text-[0.72rem]"
+      aria-live="polite"
+    >
+      <span>{{ visibleEntityCount().toLocaleString() }} organizations</span>
+      <span class="text-accent font-medium">Custom measured window</span>
+    </div>
+
+    <cdk-virtual-scroll-viewport
+      #viewport
+      class="virtual-viewport organization-list"
+      data-testid="after-list"
+      [appVariableSizeVirtualScroll]="estimatedHeights()"
+      aria-label="Organizations"
+    >
+      <ul class="virtual-list">
+        <li
+          *cdkVirtualFor="
+            let organization of filteredOrganizations();
+            let groupIndex = index;
+            trackBy: trackById
+          "
+          class="organization-group"
+          [appMeasureVirtualItem]="groupIndex"
+        >
+          <button
+            type="button"
+            class="organization-option"
+            [class.organization-option--selected]="selectedId() === organization.id"
+            [attr.aria-pressed]="selectedId() === organization.id"
+            (click)="select(organization)"
+          >
+            <app-organization-row [organization]="organization" />
+            @if (organization.subOrganizations.length) {
+              <span hlmBadge variant="secondary" class="shrink-0">
+                {{ organization.subOrganizations.length }} sub-orgs
+              </span>
+            }
+          </button>
+          @if (organization.subOrganizations.length) {
+            <ul
+              class="suborganization-list"
+              [attr.aria-label]="'Sub-organizations of ' + organization.name"
+            >
+              @for (subOrganization of organization.subOrganizations; track subOrganization.id) {
+                <li>
+                  <button
+                    type="button"
+                    class="organization-option organization-option--sub"
+                    [class.organization-option--selected]="selectedId() === subOrganization.id"
+                    [attr.aria-pressed]="selectedId() === subOrganization.id"
+                    (click)="select(subOrganization)"
+                  >
+                    <app-organization-row [organization]="subOrganization" />
+                  </button>
+                </li>
+              }
+            </ul>
+          }
+        </li>
+      </ul>
+    </cdk-virtual-scroll-viewport>
+  </div>
+
+  <hlm-separator />
+
+  <footer
+    hlmCardFooter
+    class="grid grid-cols-3 gap-4"
+    aria-label="Custom variable-height virtual scrolling metrics"
+  >
+    <div class="flex flex-col gap-0.5">
+      <span class="text-muted-foreground text-[0.6rem] font-medium tracking-[0.035em] uppercase">
+        Live rows
+      </span>
+      <strong class="text-foreground text-[0.85rem] font-semibold">{{
+        renderedCount(viewport)
+      }}</strong>
+    </div>
+    <div class="flex flex-col gap-0.5">
+      <span class="text-muted-foreground text-[0.6rem] font-medium tracking-[0.035em] uppercase">
+        Search → paint
+      </span>
+      <strong class="text-foreground text-[0.85rem] font-semibold">
+        {{ interactionLatency() === null ? 'Try it' : interactionLatency()!.toFixed(0) + ' ms' }}
+      </strong>
+    </div>
+    <div class="flex flex-col gap-0.5">
+      <span class="text-muted-foreground text-[0.6rem] font-medium tracking-[0.035em] uppercase">
+        Memory pressure
+      </span>
+      <span hlmBadge variant="secondary" class="mt-0.5 w-fit">Low</span>
+    </div>
+  </footer>
+</article>

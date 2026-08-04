@@ -1,5 +1,5 @@
 {
-  "name": "ng-monolithic-starter",
+  "name": "ng-virtual-scroll",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -7,7 +7,7 @@
     "template:init": "node scripts/init-template.mjs",
     "start": "ng serve",
     "build": "ng build",
-    "analyze": "ng build --stats-json && esbuild-visualizer --metadata dist/ng-monolithic-starter/stats.json --filename dist/ng-monolithic-starter/bundle-analysis.html --open",
+    "analyze": "ng build --stats-json && esbuild-visualizer --metadata dist/ng-virtual-scroll/stats.json --filename dist/ng-virtual-scroll/bundle-analysis.html --open",
     "deps:graph": "pnpm deps:graph:all",
     "deps:graph:all": "mkdir -p deps && depcruise src/app --config .dependency-cruiser.cjs --output-type dot --collapse '^src/app/shared/ui/[^/]+' --prefix '../' | dot -T svg -o deps/dependency-graph-all.svg",
     "deps:graph:modules": "mkdir -p deps && depcruise src/app --config .dependency-cruiser.cjs --output-type dot --collapse '^src/app/shared/ui/[^/]+' --focus '^src/app/modules/' --focus-depth 1 --prefix '../' | dot -T svg -o deps/dependency-graph-modules.svg",

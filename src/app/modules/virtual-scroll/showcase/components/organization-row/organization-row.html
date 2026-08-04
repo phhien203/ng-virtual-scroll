@@ -1,0 +1,21 @@
+<hlm-avatar
+  class="size-10 rounded-[0.3rem] after:rounded-[0.3rem]"
+  [style.background]="organization().accent"
+>
+  <span hlmAvatarFallback class="rounded-[0.3rem] bg-transparent font-bold text-white">
+    {{ organization().initials }}
+  </span>
+</hlm-avatar>
+<span class="identity min-w-0">
+  <strong class="text-foreground truncate text-[0.875rem] font-semibold">{{
+    organization().name
+  }}</strong>
+  <span class="text-muted-foreground truncate text-[0.72rem]">
+    {{ organization().location }} · {{ organization().memberCount }} members
+  </span>
+</span>
+<ng-icon
+  name="lucideChevronRight"
+  aria-hidden="true"
+  class="text-muted-foreground shrink-0 text-[--spacing(5)]"
+/>

@@ -7,10 +7,10 @@ export default [
     children: [
       {
         path: '',
-        title: 'General Settings',
+        title: 'Virtual Scroll',
         loadComponent: () =>
-          import('@modules/settings/general-settings/general-settings').then(
-            (m) => m.GeneralSettings,
+          import('@modules/virtual-scroll/showcase/virtual-scroll-showcase').then(
+            (m) => m.VirtualScrollShowcase,
           ),
       },
     ],

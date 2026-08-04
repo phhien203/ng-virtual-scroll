@@ -1,0 +1,171 @@
+<main id="top" class="bg-card text-foreground min-h-screen">
+  <header class="border-border border-b">
+    <nav
+      class="border-border mx-auto flex min-h-[3.75rem] w-full max-w-[78rem] items-center justify-between gap-4 border-b px-5"
+      aria-label="Case study navigation"
+    >
+      <a href="#top" class="text-foreground text-sm font-semibold no-underline">
+        Custom virtual scrolling
+      </a>
+      <span hlmBadge variant="outline" class="hidden sm:inline-flex">Angular case study</span>
+    </nav>
+
+    <div class="mx-auto max-w-[58rem] px-5 py-20 sm:py-28">
+      <p hlmBadge variant="outline">Angular · Frontend performance case study</p>
+      <h1
+        class="mt-4 max-w-[16ch] text-4xl leading-[1.05] font-semibold tracking-[-0.05em] sm:text-6xl"
+      >
+        Custom virtual scrolling for dynamic-height organization groups
+      </h1>
+      <p class="text-muted-foreground mt-6 max-w-[46rem] text-base leading-relaxed sm:text-lg">
+        A focused reconstruction of a large organization selector. A custom Angular CDK
+        <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-[0.85em]"
+          >VirtualScrollStrategy</code
+        >
+        keeps search and selection behavior intact while limiting DOM work to the visible portion of
+        a hierarchy whose items do not share a fixed height.
+      </p>
+
+      <dl class="border-border mt-12 grid grid-cols-1 border-y sm:grid-cols-3">
+        <div class="py-4 pr-6">
+          <dt class="text-muted-foreground text-[0.72rem] tracking-[0.055em] uppercase">
+            Test dataset
+          </dt>
+          <dd class="mt-1 text-sm font-semibold">10,000 organizations</dd>
+        </div>
+        <div
+          class="border-border border-l py-4 pr-6 pl-6 max-sm:border-t max-sm:border-l-0 max-sm:pl-0"
+        >
+          <dt class="text-muted-foreground text-[0.72rem] tracking-[0.055em] uppercase">
+            Hierarchy
+          </dt>
+          <dd class="mt-1 text-sm font-semibold">0–6 children per parent</dd>
+        </div>
+        <div class="border-border border-l py-4 pl-6 max-sm:border-t max-sm:border-l-0 max-sm:pl-0">
+          <dt class="text-muted-foreground text-[0.72rem] tracking-[0.055em] uppercase">
+            Implementation
+          </dt>
+          <dd class="mt-1 text-sm font-semibold">Angular 22 + CDK</dd>
+        </div>
+      </dl>
+    </div>
+  </header>
+
+  <section class="bg-muted px-5 py-20" aria-labelledby="comparison-title">
+    <div class="mx-auto max-w-[78rem]">
+      <div class="grid items-end gap-8 md:grid-cols-[1.15fr_0.85fr]">
+        <div>
+          <p hlmBadge variant="outline">Interactive comparison</p>
+          <h2
+            id="comparison-title"
+            class="mt-3 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl"
+          >
+            Same data and behavior, different rendering
+          </h2>
+        </div>
+        <p class="text-muted-foreground text-sm leading-relaxed md:mb-1">
+          Search and scroll both selectors. The baseline renders every matching row; the optimized
+          version keeps a measured window in the DOM.
+        </p>
+      </div>
+
+      <div class="mt-6 flex items-center justify-between gap-4">
+        <p class="text-muted-foreground max-w-[42rem] text-sm leading-relaxed">
+          The baseline selector is hidden by default so the page does not pay for its large DOM
+          until you explicitly open it for comparison.
+        </p>
+        <button
+          hlmBtn
+          type="button"
+          variant="outline"
+          aria-controls="baseline-selector"
+          [attr.aria-expanded]="showBaseline()"
+          (click)="toggleBaseline()"
+        >
+          {{ showBaseline() ? 'Hide' : 'Show' }} baseline selector
+        </button>
+      </div>
+
+      <div class="mt-8 grid gap-4 md:grid-cols-2">
+        <div id="baseline-selector">
+          @if (showBaseline()) {
+            <app-before-org-selector [organizations]="organizations" />
+          }
+        </div>
+        <app-after-org-selector [organizations]="organizations" />
+      </div>
+
+      <div hlmAlert class="mt-6">
+        <h4 hlmAlertTitle>About the data</h4>
+        <p hlmAlertDescription>
+          This reconstruction uses deterministic synthetic organizations and contains no customer or
+          production data. Search-to-paint values are measured locally in your browser.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-card px-5 py-20" aria-labelledby="technique-title">
+    <div class="mx-auto max-w-[78rem]">
+      <div class="grid items-end gap-8 md:grid-cols-[1.15fr_0.85fr]">
+        <div>
+          <p hlmBadge variant="outline">Implementation</p>
+          <h2
+            id="technique-title"
+            class="mt-3 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl"
+          >
+            A custom strategy for variable-height items
+          </h2>
+        </div>
+        <p class="text-muted-foreground text-sm leading-relaxed md:mb-1">
+          Each top-level organization and its children form one virtual item. Estimates provide an
+          immediate layout; browser measurements refine the offset map after rendering.
+        </p>
+      </div>
+
+      <ol
+        class="mt-8 grid gap-4 md:grid-cols-3"
+        aria-label="Custom variable-height virtual scrolling data flow"
+      >
+        @for (step of steps; track step.number) {
+          <li hlmCard class="gap-0">
+            <div hlmCardContent class="flex gap-4">
+              <span class="text-muted-foreground pt-0.5 font-mono text-[0.7rem]">
+                {{ step.number }}
+              </span>
+              <div>
+                <h3 class="text-sm font-semibold">{{ step.title }}</h3>
+                <p class="text-muted-foreground mt-1 text-xs leading-relaxed">
+                  {{ step.description }}
+                </p>
+              </div>
+            </div>
+          </li>
+        }
+      </ol>
+
+      <div hlmCard class="mt-6">
+        <div hlmCardHeader>
+          <h3 hlmCardTitle>Core implementation</h3>
+          <p hlmCardDescription>
+            Fixed <code class="bg-muted rounded px-1 py-0.5 font-mono text-[0.9em]">itemSize</code>
+            scrolling cannot model groups with different child counts. This custom
+            <code class="bg-muted rounded px-1 py-0.5 font-mono text-[0.9em]"
+              >VirtualScrollStrategy</code
+            >
+            uses stable Angular CDK extension points rather than the experimental autosize package.
+          </p>
+        </div>
+        <div hlmCardContent>
+          <pre
+            class="bg-foreground text-background overflow-x-auto rounded-md p-4 font-mono text-[0.72rem] leading-relaxed"
+          ><code>&lt;cdk-virtual-scroll-viewport
+  [appVariableSizeVirtualScroll]="estimatedHeights()"&gt;
+  &lt;li *cdkVirtualFor="let group of groups; let index = index"
+      [appMeasureVirtualItem]="index"&gt;
+&lt;/cdk-virtual-scroll-viewport&gt;</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

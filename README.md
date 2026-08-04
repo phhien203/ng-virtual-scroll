@@ -1,45 +1,6 @@
-# Angular Monolithic Starter
+# Virtual Scroll
 
 An opinionated Angular 22 starter for building a modular monolith. It includes a customizable UI system, enforced module boundaries, bundle and dependency analysis, local quality gates, containerized runtime configuration, and continuous integration.
-
-<!-- TEMPLATE-ONLY:START -->
-
-## Create a project from this template
-
-This repository is configured as a GitHub template. If the GitHub CLI is installed, create and
-clone a repository with:
-
-```bash
-gh repo create my-new-app \
-  --template phhien203/ng-monolithic-starter \
-  --private \
-  --clone
-cd my-new-app
-```
-
-Without the GitHub CLI, open
-[phhien203/ng-monolithic-starter](https://github.com/phhien203/ng-monolithic-starter) on GitHub,
-select **Use this template → Create a new repository**, choose the repository name and visibility,
-and select **Create repository**. Then copy the new repository's URL from its **Code** menu and clone
-it with Git:
-
-```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/my-new-app.git
-cd my-new-app
-```
-
-Initialize the copied workspace before installing dependencies. The first argument is the lowercase kebab-case package and Angular project name. The optional second argument is the human-readable application title; when omitted, it is derived from the project name.
-
-```bash
-pnpm template:init my-new-app "My New App"
-pnpm install
-pnpm start
-```
-
-The initializer updates `package.json`, `angular.json`, Docker build paths, the browser title, and this README. It can only run once. Commit the initialized files as the first application-specific commit.
-
-Repository owners can enable template mode under **Settings → General → Template repository**. See GitHub's [template repository documentation](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository) for access and repository-creation options.
-<!-- TEMPLATE-ONLY:END -->
 
 ## Update a project from this template
 
@@ -274,7 +235,7 @@ Create a production build and open an interactive bundle-size report:
 pnpm analyze
 ```
 
-The report is written to `dist/ng-monolithic-starter/bundle-analysis.html`. Use it to identify large application chunks and dependencies, and use the production budgets in `angular.json` as the CI safety net.
+The report is written to `dist/ng-virtual-scroll/bundle-analysis.html`. Use it to identify large application chunks and dependencies, and use the production budgets in `angular.json` as the CI safety net.
 
 ## Source dependency graphs
 
@@ -322,11 +283,11 @@ The multi-stage `Dockerfile` builds the application with Node 24 and serves the 
 Build and run the image:
 
 ```bash
-docker build -t ng-monolithic-starter .
+docker build -t ng-virtual-scroll .
 docker run --rm -p 8080:80 \
   -e API_BASE_URL=https://api.example.com \
   -e SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0 \
-  ng-monolithic-starter
+  ng-virtual-scroll
 ```
 
 Open `http://localhost:8080`.
@@ -341,7 +302,7 @@ The image is environment-independent. At container startup, nginx substitutes en
 You can load them from a file:
 
 ```bash
-docker run --rm -p 8080:80 --env-file .env.production ng-monolithic-starter
+docker run --rm -p 8080:80 --env-file .env.production ng-virtual-scroll
 ```
 
 For local development, `public/config.json` supplies the same defaults. These values are sent to the browser and must never contain credentials or other secrets. Keep private deployment credentials in the target platform's secret store.

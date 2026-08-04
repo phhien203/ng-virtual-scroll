@@ -1,0 +1,10 @@
+@use '../selector-list';
+
+.after-accent {
+  --accent: #176b54;
+  --accent-soft: #eef8f4;
+}
+
+.virtual-viewport {
+  height: 25rem;
+}

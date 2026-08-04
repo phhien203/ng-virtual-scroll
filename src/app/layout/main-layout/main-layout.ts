@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRouteSnapshot, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideCommand } from '@ng-icons/lucide';
 import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
+import { map, startWith } from 'rxjs';
 
 import { NavMain } from '@layout/main-layout/components/nav-main';
-import { NavProjects } from '@layout/main-layout/components/nav-projects';
 import { NavSecondary } from '@layout/main-layout/components/nav-secondary';
 import { NavUser } from '@layout/main-layout/components/nav-user';
 import { ThemeSwitch } from '@layout/main-layout/components/theme-switch/theme-switch';
@@ -20,7 +21,6 @@ import { sidebarData } from '@layout/main-layout/models/sidebar-data';
     HlmSeparatorImports,
     HlmSidebarImports,
     NavMain,
-    NavProjects,
     NavSecondary,
     NavUser,
     ThemeSwitch,
@@ -53,7 +53,6 @@ import { sidebarData } from '@layout/main-layout/models/sidebar-data';
 
         <hlm-sidebar-content>
           <app-nav-main [items]="data.navMain" />
-          <app-nav-projects [projects]="data.projects" />
           <app-nav-secondary class="mt-auto" [items]="data.navSecondary" />
         </hlm-sidebar-content>
 
@@ -76,7 +75,7 @@ import { sidebarData } from '@layout/main-layout/models/sidebar-data';
                 </li>
                 <li hlmBreadcrumbSeparator class="hidden sm:block"></li>
                 <li hlmBreadcrumbItem>
-                  <span hlmBreadcrumbPage>Dashboard</span>
+                  <span hlmBreadcrumbPage>{{ breadcrumbPage() }}</span>
                 </li>
               </ol>
             </nav>
@@ -92,5 +91,29 @@ import { sidebarData } from '@layout/main-layout/models/sidebar-data';
   `,
 })
 export class MainLayout {
+  private readonly router = inject(Router);
+
   protected readonly data = sidebarData;
+  protected readonly breadcrumbPage = toSignal(
+    this.router.events.pipe(
+      startWith(null),
+      map(() => this.resolveBreadcrumbTitle(this.router.routerState.snapshot.root) ?? 'Dashboard'),
+    ),
+    { initialValue: 'Dashboard' },
+  );
+
+  private resolveBreadcrumbTitle(route: ActivatedRouteSnapshot): string | undefined {
+    let current: ActivatedRouteSnapshot | null = route;
+    let title: string | undefined;
+
+    while (current) {
+      if (typeof current.routeConfig?.title === 'string') {
+        title = current.routeConfig.title;
+      }
+
+      current = current.firstChild ?? null;
+    }
+
+    return title;
+  }
 }
