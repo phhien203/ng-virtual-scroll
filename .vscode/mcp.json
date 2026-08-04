@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "angular-cli": {
+      "command": "pnpm",
+      "args": ["exec", "ng", "mcp"]
+    },
+    "spartan-ui": {
+      "command": "pnpm",
+      "args": ["exec", "spartan-mcp"]
+    }
+  }
+}

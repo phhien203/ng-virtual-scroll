@@ -1,0 +1,9 @@
+allowBuilds:
+  '@parcel/watcher': true
+  '@sentry/cli': true
+  esbuild: true
+  less: true
+  lmdb: false
+  msgpackr-extract: false
+  nx: true
+  unrs-resolver: false
