@@ -43,8 +43,4 @@ export class VirtualScrollShowcase {
       description: 'Observe rendered groups and update offsets when browser dimensions differ.',
     },
   ];
-
-  protected toggleBaseline(): void {
-    this.showBaseline.update((value) => !value);
-  }
 }

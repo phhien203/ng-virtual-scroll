@@ -71,7 +71,7 @@ import { sidebarData } from '@layout/main-layout/models/sidebar-data';
             <nav hlmBreadcrumb aria-label="Breadcrumb">
               <ol hlmBreadcrumbList>
                 <li hlmBreadcrumbItem class="hidden sm:block">
-                  <a hlmBreadcrumbLink link="/">Application</a>
+                  <a hlmBreadcrumbLink link="/">Performance</a>
                 </li>
                 <li hlmBreadcrumbSeparator class="hidden sm:block"></li>
                 <li hlmBreadcrumbItem>

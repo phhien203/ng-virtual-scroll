@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Organization, OrganizationSummary } from '../models/organization.model';
 
-export const ORGANIZATION_GROUP_COUNT = 2_500;
-export const ORGANIZATION_ENTITY_COUNT = 10_000;
+export const ORGANIZATION_GROUP_COUNT = 250;
+export const ORGANIZATION_ENTITY_COUNT = 1_000;
 export const ORGANIZATION_ROW_HEIGHT = 64;
 export const SUB_ORGANIZATION_ROW_HEIGHT = 44;
 
