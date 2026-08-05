@@ -16,5 +16,6 @@ Each direct child of this directory is an independently owned feature boundary.
   replace API boundaries with deterministic fakes in component tests.
 - Model loading, success, empty, and error states explicitly for data-driven screens.
 
-The products feature is the reference example for lazy routing, explicit view states, accessible
-spartan/ui composition, and component/router tests.
+The virtual-scroll feature is the reference example for lazy routing, explicit view states,
+accessible spartan/ui composition, and component/router tests. Its showcase is a custom Angular CDK
+`VirtualScrollStrategy` for variable-height items, with unit tests for the strategy and dataset.
