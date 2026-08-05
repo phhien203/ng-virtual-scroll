@@ -15,6 +15,7 @@ import {
   withRouterConfig,
 } from '@angular/router';
 import * as Sentry from '@sentry/angular';
+import { inject as injectVercelAnalytics } from '@vercel/analytics';
 
 import { ConfigService } from '@core/config/config';
 
@@ -48,6 +49,8 @@ export function provideCore({ routes }: CoreOptions) {
     provideAppInitializer(async () => {
       const configService = inject(ConfigService);
       const injector = inject(Injector);
+
+      injectVercelAnalytics();
 
       return configService.load().then(() => {
         initializeSentry(configService);
