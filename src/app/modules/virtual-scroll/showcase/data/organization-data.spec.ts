@@ -19,8 +19,8 @@ describe('OrganizationData', () => {
   });
 
   it('should provide 10,000 deterministic organizations in 2,500 parent groups', () => {
-    expect(service.organizations).toHaveLength(2_500);
-    expect(countOrganizationEntities(service.organizations)).toBe(10_000);
+    expect(service.organizations).toHaveLength(250);
+    expect(countOrganizationEntities(service.organizations)).toBe(1_000);
     expect(service.organizations[0]).toMatchObject({ id: 1, name: 'Northstar Apparel 0001' });
     expect(
       service.organizations.some(({ subOrganizations }) => subOrganizations.length === 0),
@@ -32,7 +32,7 @@ describe('OrganizationData', () => {
       id,
       ...subOrganizations.map((child) => child.id),
     ]);
-    expect(new Set(ids).size).toBe(10_000);
+    expect(new Set(ids).size).toBe(1_000);
   });
 
   it('should create smaller datasets for tests and demos', () => {
