@@ -1,11 +1,13 @@
-import { Component, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, input } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideChevronRight, lucideGauge } from '@ng-icons/lucide';
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
 import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
+import { filter, map, startWith } from 'rxjs';
 
-import { SidebarNavigationItem } from '@layout/main-layout/models/sidebar-data';
+import { SidebarNavigationItem, SidebarSubItem } from '@layout/main-layout/models/sidebar-data';
 
 @Component({
   selector: 'app-nav-main',
@@ -21,9 +23,9 @@ import { SidebarNavigationItem } from '@layout/main-layout/models/sidebar-data';
       <div hlmSidebarGroupLabel>Platform</div>
       <ul hlmSidebarMenu>
         @for (item of items(); track item.title) {
-          <hlm-collapsible [expanded]="item.isActive ?? false">
+          <hlm-collapsible [expanded]="itemActive(item)">
             <li hlmSidebarMenuItem>
-              <a hlmSidebarMenuButton [isActive]="item.isActive ?? false" [routerLink]="item.url">
+              <a hlmSidebarMenuButton [isActive]="itemActive(item)" [routerLink]="item.url">
                 <ng-icon [name]="item.icon" />
                 <span>{{ item.title }}</span>
               </a>
@@ -41,7 +43,11 @@ import { SidebarNavigationItem } from '@layout/main-layout/models/sidebar-data';
                   <ul hlmSidebarMenuSub>
                     @for (subItem of subItems; track subItem.title) {
                       <li hlmSidebarMenuSubItem>
-                        <a hlmSidebarMenuSubButton [routerLink]="subItem.url">
+                        <a
+                          hlmSidebarMenuSubButton
+                          [isActive]="subItemActive(subItem)"
+                          [routerLink]="subItem.url"
+                        >
                           {{ subItem.title }}
                         </a>
                       </li>
@@ -58,4 +64,38 @@ import { SidebarNavigationItem } from '@layout/main-layout/models/sidebar-data';
 })
 export class NavMain {
   readonly items = input.required<SidebarNavigationItem[]>();
+
+  private readonly router = inject(Router);
+
+  /** The current URL path (minus query/hash and trailing slash), updated on navigation. */
+  private readonly currentPath = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map(() => this.pathOf(this.router.url)),
+      startWith(this.pathOf(this.router.url)),
+    ),
+    { initialValue: this.pathOf(this.router.url) },
+  );
+
+  /**
+   * A top-level item is active when the current URL matches its own link, or — for an item that
+   * groups sub-items — when any of its sub-item links match (which also keeps its section expanded).
+   */
+  protected readonly itemActive = (item: SidebarNavigationItem): boolean => {
+    if (item.items?.length) {
+      return item.items.some((subItem) => this.subItemActive(subItem));
+    }
+
+    return this.pathOf(item.url) === this.currentPath();
+  };
+
+  protected readonly subItemActive = (subItem: SidebarSubItem): boolean =>
+    this.pathOf(subItem.url) === this.currentPath();
+
+  private pathOf(url: string): string {
+    const withoutTrailingSlash = url.split('?')[0];
+    return withoutTrailingSlash.endsWith('/') && withoutTrailingSlash.length > 1
+      ? withoutTrailingSlash.slice(0, -1)
+      : withoutTrailingSlash;
+  }
 }

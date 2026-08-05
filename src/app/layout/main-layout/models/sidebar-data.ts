@@ -7,7 +7,6 @@ export interface SidebarNavigationItem {
   title: string;
   url: string;
   icon: string;
-  isActive?: boolean;
   items?: SidebarSubItem[];
 }
 
@@ -38,7 +37,6 @@ export const sidebarData: {
       title: 'Performance',
       url: '.',
       icon: 'lucideGauge',
-      isActive: true,
       items: [{ title: 'Virtual Scroll', url: '/virtual-scroll' }],
     },
   ],
