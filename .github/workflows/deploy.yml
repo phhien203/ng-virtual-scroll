@@ -1,24 +1,24 @@
-name: CI
+name: Deploy
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: [feature/github]
+  # pull_request:
+  #   branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
+# permissions:
+#   contents: read
 
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ci-${{ github.ref }}
+#   cancel-in-progress: true
 
 jobs:
-  verify:
-    name: Verify
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # timeout-minutes: 15
 
     steps:
       - name: Check out repository
@@ -37,3 +37,9 @@ jobs:
 
       - name: Verify repository
         run: pnpm verify
+
+      - name: Upload artifact to github
+        uses: actions/upload-artifact@v6
+        with:
+          name: dist
+          path: dist/
