@@ -24,9 +24,11 @@ runs:
 
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
+      shell: bash
 
     - name: Verify repository
       run: pnpm build
+      shell: bash
 
     - name: Upload artifact to github
       uses: actions/upload-artifact@v6
