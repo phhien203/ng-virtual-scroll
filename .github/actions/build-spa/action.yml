@@ -1,0 +1,35 @@
+name: Build Single Page Application
+description: Install dependencies with pnpm cache, build the static file for single page application, and upload the dist artifact.
+
+inputs:
+  node-version:
+    description: Node.js version (e.g. 22.22) to use for the build.
+    required: false
+    default: '22'
+  artifact-name:
+    description: Name to give the upload build artifact.
+    required: false
+    default: dist
+
+runs:
+  using: composite
+  steps:
+    - name: Set up pnpm and Node.js
+      uses: pnpm/setup@v1
+      with:
+        version: 11.5.2
+        runtime: node@${{ inputs.node-version }}
+        cache: true
+        install: false
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Verify repository
+      run: pnpm build
+
+    - name: Upload artifact to github
+      uses: actions/upload-artifact@v6
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: dist/
