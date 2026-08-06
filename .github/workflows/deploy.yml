@@ -24,25 +24,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v6
 
-      - name: Set up pnpm and Node.js
-        uses: pnpm/setup@v1
+      - name: Build SPA
+        uses: ./.github/actions/build-spa
         with:
-          version: 11.5.2
-          runtime: node@24
-          cache: true
-          install: false
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Verify repository
-        run: pnpm verify
-
-      - name: Upload artifact to github
-        uses: actions/upload-artifact@v6
-        with:
-          name: dist
-          path: dist/
+          node-version: 24
+          artifact-name: dist
 
   deploy:
     name: Deploy to AWS

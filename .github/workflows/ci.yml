@@ -1,0 +1,9 @@
+# name: CI
+
+# on:
+#   pull_request:
+#     branches: [main, feature/github]
+
+# jobs:
+#   build:
+#     uses: ./.github/workflows/
