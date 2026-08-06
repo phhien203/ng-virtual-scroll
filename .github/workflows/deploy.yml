@@ -63,4 +63,4 @@ jobs:
           aws-region: eu-north-1
 
       - name: Upload artifact to AWS S3 bucket
-        run: aws s3 sync dist/ s3://ng-virtual-scroll-bucket/ --delete
+        run: aws s3 sync dist/ng-virtual-scroll/browser s3://ng-virtual-scroll-bucket/ --delete
