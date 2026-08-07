@@ -2,9 +2,9 @@ name: Deploy
 
 on:
   push:
-    branches: [feature/github]
-  # pull_request:
-  #   branches: [main]
+    branches:
+      - 'main'
+      - 'feature/github'
   workflow_dispatch:
 
 # permissions:
@@ -16,19 +16,10 @@ on:
 
 jobs:
   build:
-    name: Build
-    runs-on: ubuntu-latest
-    # timeout-minutes: 15
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
-
-      - name: Build SPA
-        uses: ./.github/actions/build-spa
-        with:
-          node-version: 24
-          artifact-name: dist
+    uses: ./.github/workflows/_build.yml
+    with:
+      node-version: '24'
+      artifact-name: dist
 
   deploy:
     name: Deploy to AWS
