@@ -16,7 +16,7 @@ runs:
   steps:
     - name: Set up pnpm and Node.js
       # pnpm/setup v1
-      uses: pnpm/setup@3a680466bfb31de66501659289b8d4d9d44a5c68
+      uses: pnpm/setup@5d160c5bc68a09337ad0d5654e237e03253b5879
       with:
         version: 11.5.2
         runtime: node@${{ inputs.node-version }}
