@@ -15,7 +15,8 @@ runs:
   using: composite
   steps:
     - name: Set up pnpm and Node.js
-      uses: pnpm/setup@v1
+      # pnpm/setup v1
+      uses: pnpm/setup@3a680466bfb31de66501659289b8d4d9d44a5c68
       with:
         version: 11.5.2
         runtime: node@${{ inputs.node-version }}
@@ -31,7 +32,8 @@ runs:
       shell: bash
 
     - name: Upload artifact to github
-      uses: actions/upload-artifact@v6
+      # actions/upload-artifact v6
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
       with:
         name: ${{ inputs.artifact-name }}
         path: dist/
