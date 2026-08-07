@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+      - 'feature/github'
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml
+    with:
+      node-version: '24'
+      artifact-name: dist
