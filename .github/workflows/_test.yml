@@ -1,0 +1,26 @@
+name: Test (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node.js version (e.g. `22.22`) to use for the tests.
+        required: false
+        default: '22.22'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        # actions/checkout v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+
+      - name: Test SPA
+        uses: ./.github/actions/test-spa
+        with:
+          node-version: ${{ inputs.node-version }}

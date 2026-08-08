@@ -19,3 +19,10 @@ jobs:
     with:
       node-version: '24'
       artifact-name: dist
+
+  test:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/_test.yml
+    with:
+      node-version: '24'
