@@ -1,0 +1,28 @@
+name: Test Single Page Application
+description: Install dependencies with pnpm cache and run the single page application's tests.
+
+inputs:
+  node-version:
+    description: Node.js version (e.g. 22.22) to use for the tests.
+    required: false
+    default: '22'
+
+runs:
+  using: composite
+  steps:
+    - name: Set up pnpm and Node.js
+      # pnpm/setup v1
+      uses: pnpm/setup@5d160c5bc68a09337ad0d5654e237e03253b5879
+      with:
+        version: 11.5.2
+        runtime: node@${{ inputs.node-version }}
+        cache: true
+        install: false
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash
+
+    - name: Run tests
+      run: pnpm test --no-watch
+      shell: bash
