@@ -1,46 +1,45 @@
 name: Deploy
 
 on:
-  push:
-    branches:
-      - 'main'
-  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+  packages: write
 
 concurrency:
   group: production-deploy
   cancel-in-progress: false
 
 jobs:
-  build:
-    permissions:
-      contents: read
-    uses: ./.github/workflows/_build.yml
-    with:
-      node-version: '24'
-      artifact-name: dist
-
-  deploy:
-    name: Deploy to AWS
+  publish:
     runs-on: ubuntu-latest
-    needs: build
-    environment: Production
     permissions:
       contents: read
-      id-token: write
+      packages: write
+    env:
+      IMAGE_TAG: sha-${{ github.sha }}
+      RELEASE_TAG: ${{ github.ref_name }}
     steps:
-      - name: Download artifact from GitHub
-        # actions/download-artifact v6
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
-        with:
-          name: dist
-          path: dist/
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
-      - name: Configure AWS Credentials
-        # aws-actions/configure-aws-credentials v6
-        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c
-        with:
-          aws-region: eu-north-1
-          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+      - name: login ghcr
+        run: echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      - name: Upload artifact to AWS S3 bucket
-        run: aws s3 sync dist/ng-virtual-scroll/browser s3://ng-virtual-scroll-bucket/ --delete
+      - name: build and push commit image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker build --tag "ghcr.io/phhien203/ng-virtual-scroll:$IMAGE_TAG" .
+          docker push "ghcr.io/phhien203/ng-virtual-scroll:$IMAGE_TAG"
+
+      - name: publish release tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid release tag: $RELEASE_TAG" >&2
+            exit 1
+          fi
+          docker pull "ghcr.io/phhien203/ng-virtual-scroll:$IMAGE_TAG"
+          docker tag "ghcr.io/phhien203/ng-virtual-scroll:$IMAGE_TAG" \
+            "ghcr.io/phhien203/ng-virtual-scroll:$RELEASE_TAG"
+          docker push "ghcr.io/phhien203/ng-virtual-scroll:$RELEASE_TAG"
