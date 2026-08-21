@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
 
+import { OrganizationsApi } from '@modules/virtual-scroll/showcase/api/organizations-api';
+
 export default [
   {
     path: '',
-    providers: [],
+    providers: [OrganizationsApi],
     children: [
       {
         path: '',

@@ -29,9 +29,17 @@
       <dl class="border-border mt-12 grid grid-cols-1 border-y sm:grid-cols-3">
         <div class="py-4 pr-6">
           <dt class="text-muted-foreground text-[0.72rem] tracking-[0.055em] uppercase">
-            Test dataset
+            Backend dataset
           </dt>
-          <dd class="mt-1 text-sm font-semibold">1,000 organizations</dd>
+          <dd class="mt-1 text-sm font-semibold">
+            @if (organizationsResource.isLoading()) {
+              Loading…
+            } @else if (organizationsResource.hasValue()) {
+              {{ organizationCount().toLocaleString() }} organizations
+            } @else {
+              Unavailable
+            }
+          </dd>
         </div>
         <div
           class="border-border border-l py-4 pr-6 pl-6 max-sm:border-t max-sm:border-l-0 max-sm:pl-0"
@@ -39,7 +47,7 @@
           <dt class="text-muted-foreground text-[0.72rem] tracking-[0.055em] uppercase">
             Hierarchy
           </dt>
-          <dd class="mt-1 text-sm font-semibold">0–6 children per parent</dd>
+          <dd class="mt-1 text-sm font-semibold">Parent and child groups</dd>
         </div>
         <div class="border-border border-l py-4 pl-6 max-sm:border-t max-sm:border-l-0 max-sm:pl-0">
           <dt class="text-muted-foreground text-[0.72rem] tracking-[0.055em] uppercase">
@@ -69,10 +77,46 @@
         </p>
       </div>
 
-      <div class="mt-8 grid gap-4 md:grid-cols-2">
-        <app-before-org-selector [organizations]="organizations" />
-        <app-after-org-selector [organizations]="organizations" />
-      </div>
+      @if (organizationsResource.isLoading()) {
+        <div
+          class="mt-8 grid gap-4 md:grid-cols-2"
+          aria-busy="true"
+          aria-label="Loading organizations"
+        >
+          <hlm-skeleton class="h-154 w-full" />
+          <hlm-skeleton class="h-154 w-full" />
+        </div>
+      } @else if (organizationsResource.error()) {
+        <hlm-alert variant="destructive" class="mt-8">
+          <h3 hlmAlertTitle>Organizations could not be loaded</h3>
+          <p hlmAlertDescription>
+            Check the backend connection and try loading the organization list again.
+          </p>
+          <div hlmAlertAction>
+            <button
+              hlmBtn
+              variant="outline"
+              size="sm"
+              type="button"
+              (click)="reloadOrganizations()"
+            >
+              Retry
+            </button>
+          </div>
+        </hlm-alert>
+      } @else if (organizations().length === 0) {
+        <hlm-empty class="mt-8">
+          <div hlmEmptyHeader>
+            <h3 hlmEmptyTitle>No organizations available</h3>
+            <p hlmEmptyDescription>The backend returned an empty organization list.</p>
+          </div>
+        </hlm-empty>
+      } @else {
+        <div class="mt-8 grid gap-4 md:grid-cols-2">
+          <app-before-org-selector [organizations]="organizations()" />
+          <app-after-org-selector [organizations]="organizations()" />
+        </div>
+      }
     </div>
   </section>
 
