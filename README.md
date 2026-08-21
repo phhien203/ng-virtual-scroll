@@ -1,9 +1,8 @@
 # Angular Virtual Scroll Showcase
 
 A frontend-performance case study for [Angular](https://angular.dev/): how to virtualize a long
-list of **variable-height** items. The app reconstructs a realistic, searchable organization
-selector — roughly 1,000 organizations arranged as 250 parents with 0–6 children each — and renders
-it two ways so you can see the difference in DOM work side by side.
+list of **variable-height** items. The app loads a realistic, searchable organization hierarchy
+from a backend and renders it two ways so you can see the difference in DOM work side by side.
 
 ## What it demonstrates
 
@@ -15,8 +14,8 @@ The centerpiece is an interactive comparison of two selectors fed the exact same
 | **Optimized (“after”)** | Keeps only a **measured window** of rows in the DOM   | Search and selection behave identically, but the rendered surface stays small no matter how large or filtered the dataset becomes. |
 
 Both selectors stay fully interactive — you can search and scroll each one and watch the reported
-interaction latency update live. The optimized side also reports how many of the ~1,000 entities are
-currently rendered versus how many exist.
+interaction latency update live. The optimized side also reports how many entities are currently
+rendered versus how many the backend returned.
 
 The reason fixed-height scrolling doesn't apply here: every top-level group has a different number of
 children, so each virtual item has a different height. A single CDK `itemSize` can't model that. The
@@ -49,8 +48,9 @@ Key source files, all under
 | `showcase/directives/measure-virtual-item.ts`         | Measures a rendered item (`ResizeObserver`) and reports its real size back to the strategy. |
 | `showcase/components/after-org-selector.ts`           | The optimized selector using the CDK viewport + custom strategy.                            |
 | `showcase/components/before-org-selector.ts`          | The baseline selector that renders all matching rows.                                       |
-| `showcase/data/organization-data.ts`                  | Deterministic ~1,000-entity dataset and the height/filter helpers.                          |
-| `showcase/virtual-scroll-showcase.ts`                 | The page composing both selectors and the explanation steps.                                |
+| `showcase/api/organizations-api.ts`                   | Loads and validates the organization hierarchy with Angular `httpResource`.                 |
+| `showcase/data/organization-data.ts`                  | Organization height, entity-count, and filtering helpers.                                   |
+| `showcase/virtual-scroll-showcase.ts`                 | The page composing both selectors and its async view states.                                |
 
 ## Running the showcase
 
@@ -64,6 +64,11 @@ pnpm start
 
 Open `http://localhost:4200` and select **Virtual Scroll** from the navigation to explore the
 comparison. The dev server reloads when source files change.
+
+The organization list is requested from `${apiBaseURL}/organizations`. With the checked-in
+`public/config.json`, this is `/api/organizations`. The endpoint must return a JSON array whose
+top-level entries contain `id`, `name`, `location`, `memberCount`, `initials`, `accent`, and a
+`subOrganizations` array. Child entries contain the same fields except `subOrganizations`.
 
 ## Project layout
 
@@ -97,8 +102,8 @@ pnpm analyze        # Production build + interactive bundle analysis
 pnpm deps:graph     # Generate source dependency-graph SVGs into deps/
 ```
 
-The showcase includes unit tests for the virtual-scroll strategy and the organization dataset that
-cover boundary cases (for example, degenerate or out-of-range measurements being ignored).
+The showcase includes unit tests for the virtual-scroll strategy, organization API boundary, page
+states, and data helpers, including failure and boundary cases.
 
 ## Working on this repository
 

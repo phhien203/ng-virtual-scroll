@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import {
   ErrorHandler,
   Injector,
@@ -26,6 +27,7 @@ export interface CoreOptions {
 export function provideCore({ routes }: CoreOptions) {
   return [
     provideBrowserGlobalErrorListeners(),
+    provideHttpClient(),
     provideRouter(
       routes,
       withRouterConfig({
